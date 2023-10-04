@@ -29,13 +29,13 @@ var receipts = make(map[string]Receipt)
 var points = make(map[string]int)
 
 func ProcessReceipt(w http.ResponseWriter, r *http.Request) {
+    // Method checker
     if r.Method != http.MethodPost {
         http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
         return
     }
 
-    // Implement receipt processing logic here
-    // Store the receipt data in the 'receipts' map
+    // use built-in NewDecoder and Decode methods to store the receipt data in the 'receipts' map
     var receipt Receipt
     err := json.NewDecoder(r.Body).Decode(&receipt)
     if err != nil {
@@ -56,6 +56,7 @@ func ProcessReceipt(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetPoints(w http.ResponseWriter, r *http.Request) {
+    // Method checker
     if r.Method != http.MethodGet {
         http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
         return
@@ -69,19 +70,25 @@ func GetPoints(w http.ResponseWriter, r *http.Request) {
     }
     receiptID := urlParts[2]
 
-    pointsAwarded, found := points[receiptID]
+    // Lookup the receipt by its ID
+    receipt, found := receipts[receiptID]
     if !found {
-        pointsAwarded = 0
+        http.Error(w, "No receipt found for that ID", http.StatusNotFound)
+        return
     }
 
+    // Calculate the points based on the rules
+    points := calculatePoints(receipt)
+
     // Return the points in the response
+    response := map[string]int{"points": points}
     w.Header().Set("Content-Type", "application/json")
-    json.NewEncoder(w).Encode(map[string]int{"points": pointsAwarded})
+    json.NewEncoder(w).Encode(response)
 }
 
-func main() {
-    http.HandleFunc("/receipts/process", ProcessReceipt)
-    http.HandleFunc("/receipts/", GetPoints)
+// func main() {
+//     http.HandleFunc("/receipts/process", ProcessReceipt)
+//     http.HandleFunc("/receipts/", GetPoints)
 
-    log.Fatal(http.ListenAndServe(":8080", nil))
-}
+//     log.Fatal(http.ListenAndServe(":8080", nil))
+// }

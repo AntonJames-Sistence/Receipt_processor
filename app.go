@@ -27,9 +27,8 @@ type Item struct {
     Price            string
 }
 
-// Create maps to store receipts and points
+// Create map to store receipts
 var receipts = make(map[string]Receipt)
-var points = make(map[string]int)
 
 func ProcessReceipt(w http.ResponseWriter, r *http.Request) {
     // Method checker
@@ -51,9 +50,6 @@ func ProcessReceipt(w http.ResponseWriter, r *http.Request) {
 
     // Store the receipt data in the 'receipts' map
     receipts[receiptID] = receipt
-
-    // debuggerlog.Println("This is a log message.")
-    log.Println(receipts)
 
     // Return the receipt ID in the response
     response := map[string]string{"id": receiptID}
@@ -89,9 +85,6 @@ func GetPoints(w http.ResponseWriter, r *http.Request) {
     // Calculate the points based on the rules
     points := calculatePoints(receipt)
 
-    // debugger
-    // log.Print(receipt)
-
     // Return the points in the response
     response := map[string]int{"points": points}
     w.Header().Set("Content-Type", "application/json")
@@ -102,61 +95,59 @@ func GetPoints(w http.ResponseWriter, r *http.Request) {
 func calculatePoints(receipt Receipt) int {
     points := 0
 
-    // Rule 1: One point for every alphanumeric character in the retailer name.
-    points += len(regexp.MustCompile("[a-zA-Z0-9]").FindAllString(receipt.Retailer, -1))
+    // Rule #1: One point for every alphanumeric character in the retailer name
+    matches := regexp.MustCompile("[a-zA-Z0-9]").FindAllString(receipt.Retailer, -1)
+    ruleOnePoints := len(matches)
+    log.Printf("You've been granted %d points from retailer", ruleOnePoints)
+    points += ruleOnePoints
 
-    // Rule 2: 50 points if the total is a round dollar amount with no cents.
+    // Rule 2: 50 points if the total is a round dollar amount with no cents
     total, _ := strconv.ParseFloat(receipt.Total, 64)
     if total == float64(int(total)) {
+        log.Printf("You've been granted 50 points from round amount")
         points += 50
     }
 
-    // Rule 3: 25 points if the total is a multiple of 0.25.
+    // Rule 3: 25 points if the total is a multiple of 0.25
     if math.Mod(total, 0.25) == 0 {
+        log.Printf("You've been granted 25 points for a total that is a multiple of 0.25")
         points += 25
     }
 
-    // Rule 4: 5 points for every two items on the receipt.
-    points += len(receipt.Items) / 2 * 5
+    // Rule 4: 5 points for every two items on the receipt
+    var ruleFourPoints = len(receipt.Items) / 2 * 5
+    log.Printf("You've been granted %d points for ammount of items", ruleFourPoints)
+    points += ruleFourPoints
 
     // Rule 5: If the trimmed length of the item description is a multiple of 3,
-    // multiply the price by 0.2 and round up to the nearest integer. The result is the number of points earned.
+    // multiply the price by 0.2 and round up to the nearest integer. The result is the number of points earned
     for _, item := range receipt.Items {
         trimmedLength := len(strings.TrimSpace(item.ShortDescription))
         if trimmedLength%3 == 0 {
             price, _ := strconv.ParseFloat(item.Price, 64)
-            points += int(math.Ceil(price * 0.2))
+            var ruleFivePoints = int(math.Ceil(price * 0.2))
+            log.Printf("You've been granted %d points for item description", ruleFivePoints)
+            points += ruleFivePoints
         }
     }
 
-    // Rule 6: 6 points if the day in the purchase date is odd.
+    // Rule 6: 6 points if the day in the purchase date is odd
     purchaseDate, _ := time.Parse("2006-01-02", receipt.PurchaseDate)
     if purchaseDate.Day()%2 != 0 {
         points += 6
-        log.Print("You've been granted 6 points")
+        log.Print("You've been granted 6 points, because purchase date is odd")
     }
 
-    // Rule 7: 10 points if the time of purchase is after 2:00pm and before 4:00pm.
+    // Rule 7: 10 points if the time of purchase is after 2:00pm and before 4:00pm
     purchaseTime, _ := time.Parse("15:04", receipt.PurchaseTime)
-    // Calculate the time duration since midnight
-    // timeSinceMidnight := purchaseTime.Sub(time.Date(0, 1, 1, 0, 0, 0, 0, time.UTC))
 
+    // Define time range
     startTime := time.Date(0, 1, 1, 14, 0, 0, 0, time.UTC)
     endTime := time.Date(0, 1, 1, 16, 0, 0, 0, time.UTC)
 
-    // Define the desired time range duration (2:00 PM to 4:00 PM)
-    // desiredTimeRange := 2 * time.Hour
-    
-    //debugger
-    log.Print(purchaseTime)
-    log.Print(startTime)
-    log.Print(endTime)
-
     if purchaseTime.After(startTime) && purchaseTime.Before(endTime) {
         points += 10
-        log.Printf("add 10 points for purchaseTime %s", purchaseTime.Format("15:04"))
-    } else {
-        log.Printf("no points awarded for purchaseTime %s", purchaseTime.Format("15:04"))
+        log.Printf("You've been granted 10 points, because purchase time is in between 14:00 and 16:00:")
     }
 
     return points

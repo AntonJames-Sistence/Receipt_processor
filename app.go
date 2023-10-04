@@ -6,6 +6,7 @@ import (
     "net/http"
     // "regexp"
     "strings"
+    "github.com/google/uuid"
 )
 
 type Receipt struct {
@@ -23,7 +24,7 @@ type Item struct {
     Price            string
 }
 
-// Create recepts and points map
+// Create maps to store receipts and points
 var receipts = make(map[string]Receipt)
 var points = make(map[string]int)
 
@@ -42,14 +43,16 @@ func ProcessReceipt(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    // Generate a unique receipt ID (you can use UUID or any other method)
-    receiptID := "generated_receipt_id"
+    // Generate a unique receipt ID using UUID
+    receiptID := uuid.New().String()
 
+    // Store the receipt data in the 'receipts' map
     receipts[receiptID] = receipt
 
     // Return the receipt ID in the response
+    response := map[string]string{"id": receiptID}
     w.Header().Set("Content-Type", "application/json")
-    json.NewEncoder(w).Encode(map[string]string{"id": receiptID})
+    json.NewEncoder(w).Encode(response)
 }
 
 func GetPoints(w http.ResponseWriter, r *http.Request) {

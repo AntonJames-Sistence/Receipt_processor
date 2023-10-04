@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Build the Go application inside the container
-RUN go build -o main .
+RUN go build -o app .
 
 # Expose port 8080
 EXPOSE 8080

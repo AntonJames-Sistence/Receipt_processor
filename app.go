@@ -153,12 +153,16 @@ func calculatePoints(receipt Receipt) int {
     return points
 }
 
-
 func main() {
     // Set handler for receipt process
     http.HandleFunc("/receipts/process", ProcessReceipt)
     // Set handler for get points
     http.HandleFunc("/receipts/", GetPoints)
 
+    // Serve static files, frontend
+    fs := http.FileServer(http.Dir("static"))
+    http.Handle("/", fs)
+
+    // Start server
     log.Fatal(http.ListenAndServe(":8080", nil))
 }

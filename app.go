@@ -68,8 +68,6 @@ func GetPoints(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    log.Printf("hello from getpoints")
-
     // Split path into pieces
     urlParts := strings.Split(r.URL.Path, "/")
     // Check correct structure
@@ -90,6 +88,9 @@ func GetPoints(w http.ResponseWriter, r *http.Request) {
 
     // Calculate the points based on the rules
     points := calculatePoints(receipt)
+
+    // debugger
+    // log.Print(receipt)
 
     // Return the points in the response
     response := map[string]int{"points": points}
@@ -132,12 +133,30 @@ func calculatePoints(receipt Receipt) int {
     purchaseDate, _ := time.Parse("2006-01-02", receipt.PurchaseDate)
     if purchaseDate.Day()%2 != 0 {
         points += 6
+        log.Print("You've been granted 6 points")
     }
 
     // Rule 7: 10 points if the time of purchase is after 2:00pm and before 4:00pm.
     purchaseTime, _ := time.Parse("15:04", receipt.PurchaseTime)
-    if purchaseTime.After(time.Date(0, 0, 0, 14, 0, 0, 0, time.UTC)) && purchaseTime.Before(time.Date(0, 0, 0, 16, 0, 0, 0, time.UTC)) {
+    // Calculate the time duration since midnight
+    // timeSinceMidnight := purchaseTime.Sub(time.Date(0, 1, 1, 0, 0, 0, 0, time.UTC))
+
+    startTime := time.Date(0, 1, 1, 14, 0, 0, 0, time.UTC)
+    endTime := time.Date(0, 1, 1, 16, 0, 0, 0, time.UTC)
+
+    // Define the desired time range duration (2:00 PM to 4:00 PM)
+    // desiredTimeRange := 2 * time.Hour
+    
+    //debugger
+    log.Print(purchaseTime)
+    log.Print(startTime)
+    log.Print(endTime)
+
+    if purchaseTime.After(startTime) && purchaseTime.Before(endTime) {
         points += 10
+        log.Printf("add 10 points for purchaseTime %s", purchaseTime.Format("15:04"))
+    } else {
+        log.Printf("no points awarded for purchaseTime %s", purchaseTime.Format("15:04"))
     }
 
     return points
@@ -145,8 +164,10 @@ func calculatePoints(receipt Receipt) int {
 
 
 func main() {
+    // Set handler for receipt process
     http.HandleFunc("/receipts/process", ProcessReceipt)
-    http.HandleFunc("/receipts/", GetPoints) // Register the GetPoints handler
+    // Set handler for get points
+    http.HandleFunc("/receipts/", GetPoints)
 
     log.Fatal(http.ListenAndServe(":8080", nil))
 }

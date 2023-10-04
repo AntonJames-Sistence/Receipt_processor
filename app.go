@@ -1,12 +1,15 @@
 package main
 
 import (
-    "encoding/json"
-    "log"
-    "net/http"
-    "regexp"
-    "strings"
-    "github.com/google/uuid"
+	"encoding/json"
+	"log"
+	"math"
+	"net/http"
+	"regexp"
+	"strconv"
+	"strings"
+	"time"
+	"github.com/google/uuid"
 )
 
 type Receipt struct {
@@ -49,6 +52,9 @@ func ProcessReceipt(w http.ResponseWriter, r *http.Request) {
     // Store the receipt data in the 'receipts' map
     receipts[receiptID] = receipt
 
+    // debuggerlog.Println("This is a log message.")
+    log.Println(receipts)
+
     // Return the receipt ID in the response
     response := map[string]string{"id": receiptID}
     w.Header().Set("Content-Type", "application/json")
@@ -62,12 +68,17 @@ func GetPoints(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    // Extract the receipt ID from the URL path
+    log.Printf("hello from getpoints")
+
+    // Split path into pieces
     urlParts := strings.Split(r.URL.Path, "/")
+    // Check correct structure
     if len(urlParts) < 3 {
         http.Error(w, "Invalid URL path", http.StatusBadRequest)
         return
     }
+    
+    // Take receipt ID
     receiptID := urlParts[2]
 
     // Lookup the receipt by its ID
@@ -135,7 +146,7 @@ func calculatePoints(receipt Receipt) int {
 
 func main() {
     http.HandleFunc("/receipts/process", ProcessReceipt)
-    http.HandleFunc("/receipts/{id}/points", GetPoints) // Register the GetPoints handler
+    http.HandleFunc("/receipts/", GetPoints) // Register the GetPoints handler
 
     log.Fatal(http.ListenAndServe(":8080", nil))
 }

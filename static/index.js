@@ -23,10 +23,7 @@ document.getElementById("submitCustomReceiptButton").addEventListener("click", f
         purchaseDate,
         purchaseTime,
         items: [
-            { shortDescription: "Gatorade", price: "2.25" },
-            { shortDescription: "Gatorade", price: "2.25" },
-            { shortDescription: "Gatorade", price: "2.25" },
-            { shortDescription: "Gatorade", price: "2.25" }
+            
         ],
         total
     };
@@ -42,7 +39,12 @@ document.getElementById("submitCustomReceiptButton").addEventListener("click", f
     .then(response => response.json())
     .then(data => {
         // Display the response in the "result" div
-        document.getElementById("result").textContent = `Receipt ID: ${data.id}`;
+        const resultElement = document.getElementById("result");
+        resultElement.innerHTML = `
+            <span class="label">JSON data:</span> ${JSON.stringify(receiptData)}
+            <br><br>
+            <span class="label">Receipt ID:</span> 
+            <span class="label-blue">${data.id}</span>`;
     })
     .catch(error => {
         console.error("Error:", error);
@@ -178,32 +180,34 @@ document.getElementById("submitReceiptThreeButton").addEventListener("click", fu
 });
 
 document.getElementById("getPointsButton").addEventListener("click", function() {
-    const labelBlueText = document.querySelector(".label-blue").textContent;
+    const labelBlue = document.querySelector(".label-blue");
+    const labelBlueText = labelBlue.textContent;
 
     if (labelBlueText) {
-        const receiptId = labelBlueText;
-        // Send a GET request to your Go backend to retrieve points
-        fetch(`/receipts/${receiptId}/points`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Display the points in the "result" div
-            const resultElement = document.getElementById("result");
-            resultElement.innerHTML = `
-                <span class="label-blue">Receipt points:</span>
-                ${data.points}`;
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            document.getElementById("result").textContent = "Error occurred while fetching points.";
-        });
+            const receiptId = labelBlueText;
+            // Send a GET request to your Go backend to retrieve points
+            fetch(`/receipts/${receiptId}/points`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the points in the "result" div
+                const resultElement = document.getElementById("result");
+                resultElement.innerHTML = `
+                    <span class="label-blue">Receipt points:</span>
+                    ${data.points}`;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("result").textContent = "Error occurred while fetching points.";
+            });
 
-        // Now you can use the extracted receipt ID as needed
+            // Now you can use the extracted receipt ID as needed
     } else {
-        console.error("Receipt ID not found in the div text.");
+        const errorMessage = "Receipt ID is not found";
+        window.alert(errorMessage);
     }
 });

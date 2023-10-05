@@ -10,25 +10,25 @@
     <div class="flex">
 
         <div class="left-side">
-            <p>
-                Here are some instructions:
-                * on the left side are three hardcoded test cases
-                * after pressing on any of them you'll see output field on the right side will be filled with 
-                two pieces of data JSON input and Receipt ID (please node that receipt ID generated randomly and will be generated again if you press same button)
-                * under test cases you can see calculator
-                * after generating receipt ID you can press calculate points button and receive final accumulated points from receipt
-            </p>
+                <h3>Here are some instructions to use this application:</h3>
+                <ul class="instructions">
+                    <li>On the left side, you will find three hardcoded test cases</li><br>
+                    <li>After clicking on any of them, you will see the output field on the right side filled with two pieces of data: JSON input and Receipt ID (Please note that the receipt ID is generated randomly and will be regenerated if you press the same button).</li><br>
+                    <li>After generating a receipt ID, you can click the "Calculate Points" button to receive the final accumulated points from the receipt. Please note that you cannot press "Calculate Points" without running a test case first.</li><br>
+                    <li>The last section is a custom test case where you can run a specific example. (Please note that this section is still under development)</li><br>
+                </ul>
             <!-- Test case buttons -->
             <div class="test-case-buttons">
-                <h2>Test cases:</h2>
-                <button id="submitReceiptOneButton">Submit Test Receipt #1</button>
-                <button id="submitReceiptTwoButton">Submit Test Receipt #2</button>
-                <button id="submitReceiptThreeButton">Submit Test Receipt #3</button>
+                <h3>Built in Test Cases:</h3>
+                <button id="submitReceiptOneButton">Test Receipt #1</button>
+                <button id="submitReceiptTwoButton">Test Receipt #2</button>
+                <button id="submitReceiptThreeButton">Test Receipt #3</button>
             </div>
             <!-- Button to get points for a receipt -->
-            <h2>Calculator:</h2>
+            <h3>Calculator:</h3>
             <button id="getPointsButton">Calculate Points</button>
 
+            <h3>Custom Test Case:</h3>
             <form>
                 <label>Please provide retailer
                     <input id="retailerInput">
@@ -43,7 +43,7 @@
                 </label>
                 <br>
                 <label>Please provide items
-                    <input id="itemsInput">
+                    <input id="itemsInput" disabled>
                 </label>
                 <br>
                 <label>Please provide your total

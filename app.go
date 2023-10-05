@@ -153,11 +153,35 @@ func calculatePoints(receipt Receipt) int {
     return points
 }
 
+func GetAllReceipts(w http.ResponseWriter, r *http.Request) {
+    // Method checker
+    if r.Method != http.MethodGet {
+        http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+        return
+    }
+
+    // Create a slice to store all receipts
+    allReceipts := []Receipt{}
+
+    // Iterate through the map and append all receipts to the slice
+    for _, receipt := range receipts {
+        allReceipts = append(allReceipts, receipt)
+    }
+
+    // Return all receipts in the response
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(allReceipts)
+}
+
 func main() {
     // Set handler for receipt process
     http.HandleFunc("/receipts/process", ProcessReceipt)
+
     // Set handler for get points
     http.HandleFunc("/receipts/", GetPoints)
+    
+    // Add a new handler for "/receipts/all"
+    http.HandleFunc("/receipts/all", GetAllReceipts)
 
     // Serve static files, frontend
     fs := http.FileServer(http.Dir("static"))

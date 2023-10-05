@@ -211,3 +211,25 @@ document.getElementById("getPointsButton").addEventListener("click", function() 
         window.alert(errorMessage);
     }
 });
+
+document.getElementById("all-receipts").addEventListener("click", function() {
+    // Send a GET request to your Go backend to retrieve all receipts
+    fetch("/receipts/all", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Display the response in the "result" div
+        const resultElement = document.getElementById("result");
+        resultElement.innerHTML = `
+            <span class="label">All Receipts:</span> ${JSON.stringify(data)}
+        `;
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        document.getElementById("result").textContent = "Error occurred while fetching all receipts.";
+    });
+});

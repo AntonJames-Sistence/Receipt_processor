@@ -160,15 +160,19 @@ func GetAllReceipts(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    // Create a slice to store all receipts
-    allReceipts := []Receipt{}
+    // Create a slice to store all receipts with IDs
+    allReceipts := []map[string]interface{}{}
 
-    // Iterate through the map and append all receipts to the slice
-    for _, receipt := range receipts {
-        allReceipts = append(allReceipts, receipt)
+    // Iterate through the map and append all receipts with IDs to the slice
+    for receiptID, receipt := range receipts {
+        receiptWithID := map[string]interface{}{
+            "id":     receiptID,
+            "receipt": receipt,
+        }
+        allReceipts = append(allReceipts, receiptWithID)
     }
 
-    // Return all receipts in the response
+    // Return all receipts with IDs in the response
     w.Header().Set("Content-Type", "application/json")
     json.NewEncoder(w).Encode(allReceipts)
 }
@@ -179,7 +183,7 @@ func main() {
 
     // Set handler for get points
     http.HandleFunc("/receipts/", GetPoints)
-    
+
     // Add a new handler for "/receipts/all"
     http.HandleFunc("/receipts/all", GetAllReceipts)
 

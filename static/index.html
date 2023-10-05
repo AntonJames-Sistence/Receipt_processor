@@ -5,20 +5,50 @@
     <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
-    <h1>Receipt Processor v1.1</h1>
+    <h1>Welcome to Receipt Processor v1.1</h1>
+
+    <p>
+        Here are some instructions:
+
+    </p>
     
     <!-- Test case buttons -->
     <div class="test-case-buttons">
+        <h2>Test cases:</h2>
         <button id="submitReceiptOneButton">Submit Test Receipt #1</button>
         <button id="submitReceiptTwoButton">Submit Test Receipt #2</button>
-        <button id="submitCustomReceiptButton">Submit Custom Test Receipt</button>
+        
     </div>
 
     <!-- Button to get points for a receipt -->
     <button id="getPointsButton">Calculate Points</button>
 
     <!-- Display area for results -->
+    <p>Output:</p>
     <div id="result"></div>
+
+    <form>
+        <label>Please provide retailer
+            <input id="retailerInput">
+        </label>
+        <br>
+        <label>Please provide date
+            <input type="date" id="purchaseDateInput">
+        </label>
+        <br>
+        <label>Please provide time
+            <input type="time" id="purchaseTimeInput">
+        </label>
+        <br>
+        <label>Please provide items
+            <input id="itemsInput">
+        </label>
+        <br>
+        <label>Please provide your total
+            <input id="totalInput">
+        </label>
+    </form>
+    <button id="submitCustomReceiptButton">Submit Custom Test Receipt</button>
     <script src="/index.js"></script>
 </body>
 </html>

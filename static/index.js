@@ -1,38 +1,54 @@
-// document.getElementById("submitReceiptButton").addEventListener("click", function() {
-//     // Collect data from form fields
-//     const retailer = document.getElementById("retailerInput").value;
-//     const purchaseDate = document.getElementById("purchaseDateInput").value;
-//     const purchaseTime = document.getElementById("purchaseTimeInput").value;
-//     const items = document.getElementById("itemsInput").value;
-//     const total = document.getElementById("totalInput").value;
+function formatTime(inputTime) {
+    const time = new Date(`1970-01-01T${inputTime}`);
+    const hours = time.getHours().toString().padStart(2, "0");
+    const minutes = time.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+}
 
-//     // Create a JSON object with the data
-//     const receiptData = {
-//         retailer,
-//         purchaseDate,
-//         purchaseTime,
-//         items,
-//         total
-//     };
+document.getElementById("submitCustomReceiptButton").addEventListener("click", function() {
+    // Collect data from form fields
+    const retailer = document.getElementById("retailerInput").value;
+    const purchaseDate = document.getElementById("purchaseDateInput").value;
 
-//     // Send a POST request to your Go backend
-//     fetch("/receipts/process", {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json"
-//         },
-//         body: JSON.stringify(receiptData)
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         // Display the response in the "result" div
-//         document.getElementById("result").textContent = `Receipt ID: ${data.id}`;
-//     })
-//     .catch(error => {
-//         console.error("Error:", error);
-//         document.getElementById("result").textContent = "Error occurred while processing the receipt.";
-//     });
-// });
+    // Convert the time input to the desired format (HH:MM)
+    const purchaseTimeInput = document.getElementById("purchaseTimeInput").value;
+    const purchaseTime = formatTime(purchaseTimeInput);
+    
+    const items = document.getElementById("itemsInput").value;
+    const total = document.getElementById("totalInput").value;
+
+    // Create a JSON object with the data
+    const receiptData = {
+        retailer,
+        purchaseDate,
+        purchaseTime,
+        items: [
+            { shortDescription: "Gatorade", price: "2.25" },
+            { shortDescription: "Gatorade", price: "2.25" },
+            { shortDescription: "Gatorade", price: "2.25" },
+            { shortDescription: "Gatorade", price: "2.25" }
+        ],
+        total
+    };
+
+    // Send a POST request to your Go backend
+    fetch("/receipts/process", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(receiptData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Display the response in the "result" div
+        document.getElementById("result").textContent = `Receipt ID: ${data.id}`;
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        document.getElementById("result").textContent = "Error occurred while processing the receipt.";
+    });
+});
 
 document.getElementById("submitReceiptOneButton").addEventListener("click", function() {
     // Example receipt data

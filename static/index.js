@@ -76,7 +76,12 @@ document.getElementById("submitReceiptOneButton").addEventListener("click", func
     .then(response => response.json())
     .then(data => {
         // Display the response in the "result" div
-        document.getElementById("result").textContent = `Receipt ID: ${data.id}`;
+        const resultElement = document.getElementById("result");
+        resultElement.innerHTML = `
+            <span class="label">JSON data:</span> ${JSON.stringify(exampleReceipt)}
+            <br><br>
+            <span class="label">Receipt ID:</span> 
+            <span class="label-blue">${data.id}</span>`;
     })
     .catch(error => {
         console.error("Error:", error);
@@ -120,7 +125,51 @@ document.getElementById("submitReceiptTwoButton").addEventListener("click", func
     })
     .then(response => response.json())
     .then(data => {
-        document.getElementById("result").textContent = `Receipt ID: ${data.id}`;
+        const resultElement = document.getElementById("result");
+        resultElement.innerHTML = `
+            <span class="label">JSON data:</span> ${JSON.stringify(exampleReceipt)}
+            <br><br>
+            <span class="label">Receipt ID:</span> 
+            <span class="label-blue">${data.id}</span>`;
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        document.getElementById("result").textContent = "Error occurred while processing the receipt.";
+    });
+});
+document.getElementById("submitReceiptThreeButton").addEventListener("click", function() {
+    // Example #3
+    const exampleReceipt = {
+        retailer: "Walgreens",
+        purchaseDate: "2022-01-02",
+        purchaseTime: "08:13",
+        items: [
+            {
+                shortDescription: "Pepsi - 12-oz", 
+                price: "1.25"
+            },{
+                shortDescription: "Dasani", 
+                price: "1.40"
+            }
+        ],
+        total: "2.65"
+    };
+
+    fetch("/receipts/process", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(exampleReceipt)
+    })
+    .then(response => response.json())
+    .then(data => {
+        const resultElement = document.getElementById("result");
+        resultElement.innerHTML = `
+            <span class="label">JSON data:</span> ${JSON.stringify(exampleReceipt)}
+            <br><br>
+            <span class="label">Receipt ID:</span> 
+            <span class="label-blue">${data.id}</span>`;
     })
     .catch(error => {
         console.error("Error:", error);
@@ -128,18 +177,11 @@ document.getElementById("submitReceiptTwoButton").addEventListener("click", func
     });
 });
 
-
 document.getElementById("getPointsButton").addEventListener("click", function() {
-    // Assuming the text content of the div looks like "Receipt ID: 5a2a02c0-457e-4356-ac64-d7ba8dcd6f8a"
-    const divText = document.getElementById("result").textContent;
+    const labelBlueText = document.querySelector(".label-blue").textContent;
 
-    // Use a regular expression to extract the receipt ID
-    const regex = /Receipt ID: (\S+)/;
-    const match = divText.match(regex);
-
-    if (match) {
-        // The captured ID is in match[1]
-        const receiptId = match[1];
+    if (labelBlueText) {
+        const receiptId = labelBlueText;
         // Send a GET request to your Go backend to retrieve points
         fetch(`/receipts/${receiptId}/points`, {
             method: "GET",
@@ -150,7 +192,10 @@ document.getElementById("getPointsButton").addEventListener("click", function() 
         .then(response => response.json())
         .then(data => {
             // Display the points in the "result" div
-            document.getElementById("result").textContent = `Points: ${data.points}`;
+            const resultElement = document.getElementById("result");
+            resultElement.innerHTML = `
+                <span class="label-blue">Receipt points:</span>
+                ${data.points}`;
         })
         .catch(error => {
             console.error("Error:", error);

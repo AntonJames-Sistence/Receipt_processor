@@ -7,48 +7,61 @@
 <body>
     <h1>Welcome to Receipt Processor v1.1</h1>
 
-    <p>
-        Here are some instructions:
+    <div class="flex">
 
-    </p>
-    
-    <!-- Test case buttons -->
-    <div class="test-case-buttons">
-        <h2>Test cases:</h2>
-        <button id="submitReceiptOneButton">Submit Test Receipt #1</button>
-        <button id="submitReceiptTwoButton">Submit Test Receipt #2</button>
-        
+        <div class="left-side">
+            <p>
+                Here are some instructions:
+                * on the left side are three hardcoded test cases
+                * after pressing on any of them you'll see output field on the right side will be filled with 
+                two pieces of data JSON input and Receipt ID (please node that receipt ID generated randomly and will be generated again if you press same button)
+                * under test cases you can see calculator
+                * after generating receipt ID you can press calculate points button and receive final accumulated points from receipt
+            </p>
+            <!-- Test case buttons -->
+            <div class="test-case-buttons">
+                <h2>Test cases:</h2>
+                <button id="submitReceiptOneButton">Submit Test Receipt #1</button>
+                <button id="submitReceiptTwoButton">Submit Test Receipt #2</button>
+                <button id="submitReceiptThreeButton">Submit Test Receipt #3</button>
+            </div>
+            <!-- Button to get points for a receipt -->
+            <h2>Calculator:</h2>
+            <button id="getPointsButton">Calculate Points</button>
+
+            <form>
+                <label>Please provide retailer
+                    <input id="retailerInput">
+                </label>
+                <br>
+                <label>Please provide date
+                    <input type="date" id="purchaseDateInput">
+                </label>
+                <br>
+                <label>Please provide time
+                    <input type="time" id="purchaseTimeInput">
+                </label>
+                <br>
+                <label>Please provide items
+                    <input id="itemsInput">
+                </label>
+                <br>
+                <label>Please provide your total
+                    <input id="totalInput">
+                </label>
+            </form>
+            <button id="submitCustomReceiptButton">Submit Custom Test Receipt</button>
+
+        </div>
+
+        <div class="right-side">
+            <!-- Display area for results -->
+            <p>Output:</p>
+            <div id="result"></div>
+        </div>
+
     </div>
-
-    <!-- Button to get points for a receipt -->
-    <button id="getPointsButton">Calculate Points</button>
-
-    <!-- Display area for results -->
-    <p>Output:</p>
-    <div id="result"></div>
-
-    <form>
-        <label>Please provide retailer
-            <input id="retailerInput">
-        </label>
-        <br>
-        <label>Please provide date
-            <input type="date" id="purchaseDateInput">
-        </label>
-        <br>
-        <label>Please provide time
-            <input type="time" id="purchaseTimeInput">
-        </label>
-        <br>
-        <label>Please provide items
-            <input id="itemsInput">
-        </label>
-        <br>
-        <label>Please provide your total
-            <input id="totalInput">
-        </label>
-    </form>
-    <button id="submitCustomReceiptButton">Submit Custom Test Receipt</button>
+    
     <script src="/index.js"></script>
 </body>
 </html>

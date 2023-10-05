@@ -1,10 +1,37 @@
 #result {
-    height: 100px;
+    height: 300px;
     width: 500px;
     border: 1px solid black;
     margin: 15px 0px 15px 0px;
+    padding: 10px;
+}
+h1 {
+    text-align: center;
+}
+h2 {
+    margin-bottom: 5px;
 }
 
 button:hover {
     cursor: pointer;
+}
+
+#getPointsButton, #submitCustomReceiptButton {
+    margin: 15px 0px 15px 0px;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-around;
+}
+
+.label {
+    color: red;
+}
+.label-blue {
+    color: blue;
+}
+
+#items-input {
+    pointer-events:none;
 }

@@ -223,7 +223,7 @@ document.getElementById("all-receipts").addEventListener("click", function() {
     .then(response => response.json())
     .then(data => {
         // Display the response in the "result" div
-        const resultElement = document.getElementById("result");
+        const resultElement = document.getElementById("receipts");
         resultElement.innerHTML = `
             <span class="label">All Receipts:</span> ${JSON.stringify(data)}
         `;

@@ -1,16 +1,17 @@
 #result {
-    height: 120px;
+    height: 200px;
     width: 500px;
     border: 1px solid black;
     margin: 15px 0px 15px 0px;
-   
 }
 
 #receipts {
-    height: 150px;
+    height: 200px;
+    max-height: 200px;
     width: 500px;
     border: 1px solid black;
     margin: 15px 0px 15px 0px;
+    overflow: auto;
 }    
 
 h1 {

@@ -13,8 +13,11 @@ document.getElementById("submitCustomReceiptButton").addEventListener("click", f
     // Convert the time input to the desired format (HH:MM)
     const purchaseTimeInput = document.getElementById("purchaseTimeInput").value;
     const purchaseTime = formatTime(purchaseTimeInput);
-    
-    const items = document.getElementById("itemsInput").value;
+
+    // Collect items data and parse it into an array of objects
+    const itemsInput = document.getElementById("itemsInput").value;
+    const items = JSON.parse(itemsInput);
+
     const total = document.getElementById("totalInput").value;
 
     // Create a JSON object with the data
@@ -22,9 +25,7 @@ document.getElementById("submitCustomReceiptButton").addEventListener("click", f
         retailer,
         purchaseDate,
         purchaseTime,
-        items: [
-            
-        ],
+        items, // Include the items array
         total
     };
 

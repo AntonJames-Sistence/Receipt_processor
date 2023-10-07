@@ -16,18 +16,24 @@
                     <li>On the left side, you will find three hardcoded test cases</li><br>
                     <li>After clicking on any of them, you will see the output field on the right side filled with two pieces of data: JSON input and Receipt ID (Please note that the receipt ID is generated randomly and will be regenerated if you press the same button).</li><br>
                     <li>After generating a receipt ID, you can click the "Calculate Points" button to receive the final accumulated points from the receipt. Please note that you cannot press "Calculate Points" without running a test case first.</li><br>
-                    <li>The last section is a custom test case where you can run a specific example. (Please note that this section is still under development)</li><br>
+                    <li>The last section is a custom test case where you can run a specific example. (Please note that this section is still under development)</li>
                 </ul>
             <!-- Test case buttons -->
-            <div class="test-case-buttons">
-                <h3>Built in Test Cases:</h3>
-                <button id="submitReceiptOneButton">Test Receipt #1</button>
-                <button id="submitReceiptTwoButton">Test Receipt #2</button>
-                <button id="submitReceiptThreeButton">Test Receipt #3</button>
+            <div class="flex">
+                <div class="test-case-buttons">
+                    <h3>Built in Test Cases:</h3>
+                    <button id="submitReceiptOneButton">Test Receipt #1</button>
+                    <button id="submitReceiptTwoButton">Test Receipt #2</button>
+                    <button id="submitReceiptThreeButton">Test Receipt #3</button>
+                    
+                </div>
+                <div class="next"><span>>>></span></div>
+                <!-- Button to get points for a receipt -->
+                <div>
+                    <h3>Calculator:</h3>
+                    <button id="getPointsButton">Calculate Points</button>
+                </div>
             </div>
-            <!-- Button to get points for a receipt -->
-            <h3>Calculator:</h3>
-            <button id="getPointsButton">Calculate Points</button>
 
             <h3>Custom Test Case:</h3>
             <form>

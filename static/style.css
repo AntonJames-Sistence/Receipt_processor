@@ -28,7 +28,7 @@ button:hover {
     cursor: pointer;
 }
 
-#getPointsButton, #submitCustomReceiptButton {
+#submitCustomReceiptButton {
     margin: 15px 0px 15px 0px;
 }
 
@@ -46,4 +46,14 @@ button:hover {
 
 .instructions {
     max-width: 600px;
+}
+
+.next {
+    display: flex;
+    align-self: flex-end;
+}
+
+.next > span {
+    font-size: x-large;
+    font-weight: 900;
 }

@@ -140,6 +140,7 @@ document.getElementById("submitReceiptTwoButton").addEventListener("click", func
         document.getElementById("result").textContent = "Error occurred while processing the receipt.";
     });
 });
+
 document.getElementById("submitReceiptThreeButton").addEventListener("click", function() {
     // Example #3
     const exampleReceipt = {
@@ -225,9 +226,24 @@ document.getElementById("all-receipts").addEventListener("click", function() {
     .then(data => {
         // Display the response in the "result" div
         const resultElement = document.getElementById("receipts");
-        resultElement.innerHTML = `
-            <span class="label">All Receipts:</span> ${JSON.stringify(data)}
-        `;
+
+        // Initialize an empty HTML content string
+        let htmlContent = '';
+
+        // Iterate through each item in the data array
+        data.forEach(item => {
+            // Add the JSON representation of the item to the HTML content
+            htmlContent += `<span class="label-blue">${JSON.stringify(item.id)}</span><br>
+                            ${JSON.stringify(item.receipt.Retailer)}<br>
+                            ${JSON.stringify(item.receipt.PurchaseDate)}<br>
+                            ${JSON.stringify(item.receipt.PurchaseTime)}<br>
+                            ${JSON.stringify(item.receipt.Total)}<br>
+                            ${JSON.stringify(item.receipt.Items)}<br>
+                            <br>`;
+        });
+
+        // Set the HTML content to the result element
+        resultElement.innerHTML = htmlContent;
     })
     .catch(error => {
         console.error("Error:", error);

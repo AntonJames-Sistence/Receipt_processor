@@ -75,3 +75,7 @@ textarea {
     width: 280px;
     padding: 5px;
 }
+
+#search {
+    width: 300px;
+}

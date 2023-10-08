@@ -42,7 +42,7 @@ document.getElementById("submitCustomReceiptButton").addEventListener("click", f
         // Display the response in the "result" div
         const resultElement = document.getElementById("result");
         resultElement.innerHTML = `
-            <span class="label">JSON data:</span> ${JSON.stringify(receiptData)}
+            <span class="label">Data:</span> ${JSON.stringify(receiptData)}
             <br><br>
             <span class="label">Receipt ID:</span> 
             <span class="label-blue">${data.id}</span>`;
@@ -81,7 +81,7 @@ document.getElementById("submitReceiptOneButton").addEventListener("click", func
         // Display the response in the "result" div
         const resultElement = document.getElementById("result");
         resultElement.innerHTML = `
-            <span class="label">JSON data:</span> ${JSON.stringify(exampleReceipt)}
+            <span class="label">Data:</span> ${JSON.stringify(exampleReceipt)}
             <br><br>
             <span class="label">Receipt ID:</span> 
             <span class="label-blue">${data.id}</span>`;
@@ -130,7 +130,7 @@ document.getElementById("submitReceiptTwoButton").addEventListener("click", func
     .then(data => {
         const resultElement = document.getElementById("result");
         resultElement.innerHTML = `
-            <span class="label">JSON data:</span> ${JSON.stringify(exampleReceipt)}
+            <span class="label">Data:</span> ${JSON.stringify(exampleReceipt)}
             <br><br>
             <span class="label">Receipt ID:</span> 
             <span class="label-blue">${data.id}</span>`;
@@ -170,7 +170,7 @@ document.getElementById("submitReceiptThreeButton").addEventListener("click", fu
     .then(data => {
         const resultElement = document.getElementById("result");
         resultElement.innerHTML = `
-            <span class="label">JSON data:</span> ${JSON.stringify(exampleReceipt)}
+            <span class="label">Data:</span> ${JSON.stringify(exampleReceipt)}
             <br><br>
             <span class="label">Receipt ID:</span> 
             <span class="label-blue">${data.id}</span>`;
@@ -250,3 +250,48 @@ document.getElementById("all-receipts").addEventListener("click", function() {
         document.getElementById("result").textContent = "Error occurred while fetching all receipts.";
     });
 });
+
+document.getElementById("search-button").addEventListener("click", function() {
+    searchReceiptById();
+});
+
+function searchReceiptById() {
+    // Get the input value (ID) from the search input
+    const searchInput = document.getElementById("search").value;
+
+    if (searchInput) {
+        // Send a GET request to retrieve all receipts
+        fetch("/receipts/all", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Find the receipt with the matching ID in the retrieved data
+            const matchingReceipt = data.find(item => item.id === searchInput);
+
+            if (matchingReceipt) {
+                // Display the matching receipt data
+                const resultElement = document.getElementById("result");
+                resultElement.innerHTML = `
+                    <span class="label">Data:</span> ${JSON.stringify(matchingReceipt.receipt)}
+                    <br><br>
+                    <span class="label">Receipt ID:</span> 
+                    <span class="label-blue">${searchInput}</span>`;
+            } else {
+                // If no matching receipt is found, display an error message
+                resultElement.textContent = "Receipt not found.";
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            document.getElementById("result").textContent = "Error occurred while fetching the receipts.";
+        });
+    } else {
+        // If the search input is empty, display a message
+        const resultElement = document.getElementById("result");
+        resultElement.textContent = "Please enter a valid receipt ID.";
+    }
+};

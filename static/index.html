@@ -6,17 +6,17 @@
     <link rel="icon" type="image/x-icon" href="favicon.png">
 </head>
 <body>
-    <h1>Welcome to Receipt Processor v1.2</h1>
+    <h1>Welcome to Receipt Processor v1.3</h1>
 
     <div class="flex">
 
         <div class="left-side">
-                <h3>Here are some instructions to use this application:</h3>
+                <h3>How to use this application:</h3>
                 <ul class="instructions">
-                    <li>On the left side, you will find three hardcoded test cases</li><br>
+                    <li>Under instructions, you will find three built in test cases.</li><br>
                     <li>After clicking on any of them, you will see the output field on the right side filled with two pieces of data: JSON input and Receipt ID (Please note that the receipt ID is generated randomly and will be regenerated if you press the same button).</li><br>
                     <li>After generating a receipt ID, you can click the "Calculate Points" button to receive the final accumulated points from the receipt. Please note that you cannot press "Calculate Points" without running a test case first.</li><br>
-                    <li>The last section is a custom test case where you can run a specific example. (Please note that this section is still under development)</li>
+                    <li>The last section is a custom test case where you can run a specific example. (Please note that items section requires a specific input format.)</li>
                 </ul>
             <!-- Test case buttons -->
             <div class="flex">
@@ -31,33 +31,33 @@
                 <!-- Button to get points for a receipt -->
                 <div>
                     <h3>Calculator:</h3>
-                    <button id="getPointsButton">Calculate Points</button>
+                    <button id="getPointsButton">Calculate total Points</button>
                 </div>
             </div>
 
             <h3>Custom Test Case:</h3>
-            <form>
-                <label>Please provide retailer
-                    <input id="retailerInput">
+            <div class="form">
+                <label class="custom-label">Retailer:
+                    <input id="retailerInput" placeholder="Target">
                 </label>
                 <br>
-                <label>Please provide date
+                <label class="custom-label">Date of purchase:
                     <input type="date" id="purchaseDateInput">
                 </label>
                 <br>
-                <label>Please provide time
+                <label class="custom-label">Time of purchase:
                     <input type="time" id="purchaseTimeInput">
                 </label>
                 <br>
-                <label>Please provide items (in the format: [{"shortDescription": "Item1", "price": "1.99"}, ...])
-                    <textarea id="itemsInput"></textarea>
+                <label class="custom-label">Please provide items in the format:<br> [{"shortDescription": "Item1", "price": "1.99"}, ...]
+                    <textarea id="itemsInput">[{"shortDescription": "Item1", "price": "1.99"}]</textarea>
                 </label>
                 <br>
-                <label>Please provide your total
-                    <input id="totalInput">
+                <label class="custom-label">Total:
+                    <input id="totalInput" placeholder="31">
                 </label>
-            </form>
-            <button id="submitCustomReceiptButton">Submit Custom Test Receipt</button>
+                <button id="submitCustomReceiptButton">Submit Custom Receipt</button>
+            </div>
 
         </div>
 

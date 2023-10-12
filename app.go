@@ -141,6 +141,22 @@ func calculatePoints(receipt Receipt) int {
     // Rule 7: 10 points if the time of purchase is after 2:00pm and before 4:00pm
     purchaseTime, _ := time.Parse("15:04", receipt.PurchaseTime)
 
+    // Rule #8: if receipt has unique items => we grant 5p for every item 
+    itemsCounter := map[string]int{"points": points}
+
+    var flag = false
+    for _, item := range receipt.Items {
+        if _,ok := itemsCounter[item.ShortDescription];ok {
+            flag = true
+            break
+        }
+        itemsCounter[item.ShortDescription] = 1
+    }
+    if flag == false {
+        points += len(receipt.Items) * 5
+        log.Printf("You've been granted %d points for unique items", len(receipt.Items) * 5)
+    }
+
     // Define time range
     startTime := time.Date(0, 1, 1, 14, 0, 0, 0, time.UTC)
     endTime := time.Date(0, 1, 1, 16, 0, 0, 0, time.UTC)
